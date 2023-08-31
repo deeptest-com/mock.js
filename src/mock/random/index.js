@@ -1,6 +1,6 @@
 /*
     ## Mock.Random
-    
+
     工具类，用于生成各种随机数据。
 */
 
@@ -20,5 +20,6 @@ Random.extend(require('./web'))
 Random.extend(require('./address'))
 Random.extend(require('./helper'))
 Random.extend(require('./misc'))
+Random.extend(require('./phone'))
 
 module.exports = Random

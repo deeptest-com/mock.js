@@ -14,13 +14,14 @@
     "commander": "*"
   },
   "devDependencies": {
+    "chai": "^4.3.8",
     "gulp": "^3.9.0",
     "gulp-connect": "^5.7.0",
     "gulp-coveralls": "^0.1.4",
     "gulp-istanbul": "^0.10.4",
     "gulp-jshint": "^2.1.0",
     "gulp-mocha": "^2.2.0",
-    "gulp-mocha-phantomjs": "^0.10.1",
+    "gulp-mocha-phantomjs": "^0.12.2",
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.1.0",
     "webpack": "^1.12.9"
@@ -32,7 +33,11 @@
   "main": "./dist/mock.js",
   "scripts": {
     "test": "gulp mocha",
-    "coveralls": "gulp coveralls"
+    "coveralls": "gulp coveralls",
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
   },
   "bin": {
     "random": "bin/random"
