@@ -1,28 +1,83 @@
 /*
     ## Web
 */
+const Basic = require("./basic");
 module.exports = {
     /*
         随机生成一个 URL。
 
         [URL 规范](http://www.w3.org/Addressing/URL/url-spec.txt)
-            http                    Hypertext Transfer Protocol 
-            ftp                     File Transfer protocol 
-            gopher                  The Gopher protocol 
-            mailto                  Electronic mail address 
-            mid                     Message identifiers for electronic mail 
-            cid                     Content identifiers for MIME body part 
-            news                    Usenet news 
-            nntp                    Usenet news for local NNTP access only 
-            prospero                Access using the prospero protocols 
+            http                    Hypertext Transfer Protocol
+            ftp                     File Transfer protocol
+            gopher                  The Gopher protocol
+            mailto                  Electronic mail address
+            mid                     Message identifiers for electronic mail
+            cid                     Content identifiers for MIME body part
+            news                    Usenet news
+            nntp                    Usenet news for local NNTP access only
+            prospero                Access using the prospero protocols
             telnet rlogin tn3270    Reference to interactive sessions
-            wais                    Wide Area Information Servers 
+            wais                    Wide Area Information Servers
     */
     url: function(protocol, host) {
         return (protocol || this.protocol()) + '://' + // protocol?
             (host || this.domain()) + // host?
             '/' + this.word()
     },
+    uri: function() {
+        var modules = [
+            'users','pets','products',
+        ]
+        return '/' + this.pick(modules) + '/' + Basic.natural(1, 9)
+    },
+    ruri: function() {
+        var modules = [
+            'users','pets','products',
+        ]
+        return '../' + this.pick(modules) + '/' + Basic.natural(1, 9)
+    },
+    uriTempl: function(r) {
+        var modules = [
+            'users','pets','products',
+        ]
+        return r ? '..' : '' + '/' + this.pick(modules) + '/{id}'
+    },
+    host: function() {
+        var names = [
+            'localhost','work-pc','ubuntu22',
+        ]
+        return this.pick(names)
+    },
+    idnHost: function() {
+        var names = [
+            'www.','',
+        ]
+        return this.pick(names) + this.word() + '.' + (this.tld())
+    },
+    idnEmail: function() {
+        return this.word() + '@' + (this.word() + '.' + this.tld())
+    },
+    ipv6: function() {
+        return 'P@sswo' + Basic.natural(10, 99)
+    },
+    password: function(len) {
+        len = len ? len : 8
+        var prefix = 'P@sswd'
+        var prefixLen = prefix.length
+
+        if (len <= 6) {
+            return prefix.substring(0, len)
+        }
+
+        var start = Math.pow(10, len - prefixLen - 1)
+        var end = Math.pow(10, len - prefixLen) - 1
+
+        return prefix + Basic.natural(start, end)
+    },
+    byte: function() {
+        return this.character('lower')
+    },
+
     // 随机生成一个 URL 协议。
     protocol: function() {
         return this.pick(

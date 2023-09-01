@@ -20,6 +20,8 @@ Random.extend(require('./web'))
 Random.extend(require('./address'))
 Random.extend(require('./helper'))
 Random.extend(require('./misc'))
+
 Random.extend(require('./phone'))
+Random.extend(require('./ipv6'))
 
 module.exports = Random

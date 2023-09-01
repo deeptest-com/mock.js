@@ -45,4 +45,41 @@ describe('Random', function() {
             expect(result).to.have.length.above(3)
         })
     })
+
+    describe('Uri', function() {
+        doit('Random.uri()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+        doit('Random.ruri()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+        doit('Random.uriTempl()', function(result) {
+            expect(result).to.have.length.above(3)
+        })
+    })
+
+    describe('Misc', function() {
+        doit('Random.host()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+        doit('Random.idnHost()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+        doit('Random.idnEmail()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+        doit('Random.ipv6()', function(result) {
+            expect(result).to.have.length.above(5)
+        })
+
+        doit('Random.password(8)', function(result) {
+            expect(result).to.have.length(8)
+        })
+        // doit('Random.password(3)', function(result) {
+        //     expect(result).to.have.length(3)
+        // })
+        doit('Random.byte()', function(result) {
+            expect(result).to.have.length(1)
+        })
+    })
 })

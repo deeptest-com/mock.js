@@ -58,12 +58,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Handler = __webpack_require__(1)
 	var Util = __webpack_require__(3)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(21)
-	var toJSONSchema = __webpack_require__(24)
-	var valid = __webpack_require__(26)
+	var RE = __webpack_require__(22)
+	var toJSONSchema = __webpack_require__(25)
+	var valid = __webpack_require__(27)
 
 	var XHR
-	if (typeof window !== 'undefined') XHR = __webpack_require__(28)
+	if (typeof window !== 'undefined') XHR = __webpack_require__(29)
 
 	/*!
 	    Mock - 模拟请求 & 模拟数据
@@ -163,7 +163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Util = __webpack_require__(3)
 	var Parser = __webpack_require__(4)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(21)
+	var RE = __webpack_require__(22)
 
 	var Handler = {
 	    extend: Util.extend
@@ -942,7 +942,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	Random.extend(__webpack_require__(17))
 	Random.extend(__webpack_require__(14))
 	Random.extend(__webpack_require__(19))
+
 	Random.extend(__webpack_require__(20))
+	Random.extend(__webpack_require__(21))
 
 	module.exports = Random
 
@@ -2274,33 +2276,88 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 16 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/*
 	    ## Web
 	*/
+	const Basic = __webpack_require__(6);
 	module.exports = {
 	    /*
 	        随机生成一个 URL。
 
 	        [URL 规范](http://www.w3.org/Addressing/URL/url-spec.txt)
-	            http                    Hypertext Transfer Protocol 
-	            ftp                     File Transfer protocol 
-	            gopher                  The Gopher protocol 
-	            mailto                  Electronic mail address 
-	            mid                     Message identifiers for electronic mail 
-	            cid                     Content identifiers for MIME body part 
-	            news                    Usenet news 
-	            nntp                    Usenet news for local NNTP access only 
-	            prospero                Access using the prospero protocols 
+	            http                    Hypertext Transfer Protocol
+	            ftp                     File Transfer protocol
+	            gopher                  The Gopher protocol
+	            mailto                  Electronic mail address
+	            mid                     Message identifiers for electronic mail
+	            cid                     Content identifiers for MIME body part
+	            news                    Usenet news
+	            nntp                    Usenet news for local NNTP access only
+	            prospero                Access using the prospero protocols
 	            telnet rlogin tn3270    Reference to interactive sessions
-	            wais                    Wide Area Information Servers 
+	            wais                    Wide Area Information Servers
 	    */
 	    url: function(protocol, host) {
 	        return (protocol || this.protocol()) + '://' + // protocol?
 	            (host || this.domain()) + // host?
 	            '/' + this.word()
 	    },
+	    uri: function() {
+	        var modules = [
+	            'users','pets','products',
+	        ]
+	        return '/' + this.pick(modules) + '/' + Basic.natural(1, 9)
+	    },
+	    ruri: function() {
+	        var modules = [
+	            'users','pets','products',
+	        ]
+	        return '../' + this.pick(modules) + '/' + Basic.natural(1, 9)
+	    },
+	    uriTempl: function(r) {
+	        var modules = [
+	            'users','pets','products',
+	        ]
+	        return r ? '..' : '' + '/' + this.pick(modules) + '/{id}'
+	    },
+	    host: function() {
+	        var names = [
+	            'localhost','work-pc','ubuntu22',
+	        ]
+	        return this.pick(names)
+	    },
+	    idnHost: function() {
+	        var names = [
+	            'www.','',
+	        ]
+	        return this.pick(names) + this.word() + '.' + (this.tld())
+	    },
+	    idnEmail: function() {
+	        return this.word() + '@' + (this.word() + '.' + this.tld())
+	    },
+	    ipv6: function() {
+	        return 'P@sswo' + Basic.natural(10, 99)
+	    },
+	    password: function(len) {
+	        len = len ? len : 8
+	        var prefix = 'P@sswd'
+	        var prefixLen = prefix.length
+
+	        if (len <= 6) {
+	            return prefix.substring(0, len)
+	        }
+
+	        var start = Math.pow(10, len - prefixLen - 1)
+	        var end = Math.pow(10, len - prefixLen) - 1
+
+	        return prefix + Basic.natural(start, end)
+	    },
+	    byte: function() {
+	        return this.character('lower')
+	    },
+
 	    // 随机生成一个 URL 协议。
 	    protocol: function() {
 	        return this.pick(
@@ -2352,6 +2409,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.natural(0, 255)
 	    }
 	}
+
 
 /***/ }),
 /* 17 */
@@ -6622,17 +6680,67 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 21 */
+/***/ (function(module, exports) {
+
+	function generatePart () {
+	    var symbols = [
+	        "0",
+	        "1",
+	        "2",
+	        "3",
+	        "4",
+	        "5",
+	        "6",
+	        "7",
+	        "8",
+	        "9",
+	        "a",
+	        "b",
+	        "c",
+	        "d",
+	        "e",
+	        "f"
+	    ];
+
+	    return (
+	        symbols[Math.floor(Math.random() * symbols.length)] +
+	        symbols[Math.floor(Math.random() * symbols.length)] +
+	        symbols[Math.floor(Math.random() * symbols.length)] +
+	        symbols[Math.floor(Math.random() * symbols.length)]
+	    );
+	}
+
+	function generateIpv6 () {
+	    var size = 8;
+	    var address = []
+
+	    for (var i = 0; i < size; i++) {
+	        address.push(generatePart())
+	    }
+
+	    return address.join(":");
+	}
+
+	module.exports = {
+	    ipv6: function() {
+	        return generateIpv6()
+	    },
+	}
+
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Parser = __webpack_require__(22)
-	var Handler = __webpack_require__(23)
+	var Parser = __webpack_require__(23)
+	var Handler = __webpack_require__(24)
 	module.exports = {
 		Parser: Parser,
 		Handler: Handler
 	}
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
@@ -7207,7 +7315,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = parser
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7604,13 +7712,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Handler
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(25)
+	module.exports = __webpack_require__(26)
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7663,13 +7771,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(27)
+	module.exports = __webpack_require__(28)
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7696,7 +7804,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	var Constant = __webpack_require__(2)
 	var Util = __webpack_require__(3)
-	var toJSONSchema = __webpack_require__(24)
+	var toJSONSchema = __webpack_require__(25)
 
 	function valid(template, data) {
 	    var schema = toJSONSchema(template)
@@ -8119,13 +8227,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = valid
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(29)
+	module.exports = __webpack_require__(30)
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global window, document, location, Event, setTimeout */
