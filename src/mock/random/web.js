@@ -1,7 +1,7 @@
 /*
     ## Web
 */
-const Basic = require("./basic");
+var Basic = require("./basic");
 module.exports = {
     /*
         随机生成一个 URL。
@@ -23,59 +23,6 @@ module.exports = {
         return (protocol || this.protocol()) + '://' + // protocol?
             (host || this.domain()) + // host?
             '/' + this.word()
-    },
-    uri: function() {
-        var modules = [
-            'users','pets','products',
-        ]
-        return '/' + this.pick(modules) + '/' + Basic.natural(1, 9)
-    },
-    ruri: function() {
-        var modules = [
-            'users','pets','products',
-        ]
-        return '../' + this.pick(modules) + '/' + Basic.natural(1, 9)
-    },
-    uriTempl: function(r) {
-        var modules = [
-            'users','pets','products',
-        ]
-        return r ? '..' : '' + '/' + this.pick(modules) + '/{id}'
-    },
-    host: function() {
-        var names = [
-            'localhost','work-pc','ubuntu22',
-        ]
-        return this.pick(names)
-    },
-    idnHost: function() {
-        var names = [
-            'www.','',
-        ]
-        return this.pick(names) + this.word() + '.' + (this.tld())
-    },
-    idnEmail: function() {
-        return this.word() + '@' + (this.word() + '.' + this.tld())
-    },
-    ipv6: function() {
-        return 'P@sswo' + Basic.natural(10, 99)
-    },
-    password: function(len) {
-        len = len ? len : 8
-        var prefix = 'P@sswd'
-        var prefixLen = prefix.length
-
-        if (len <= 6) {
-            return prefix.substring(0, len)
-        }
-
-        var start = Math.pow(10, len - prefixLen - 1)
-        var end = Math.pow(10, len - prefixLen) - 1
-
-        return prefix + Basic.natural(start, end)
-    },
-    byte: function() {
-        return this.character('lower')
     },
 
     // 随机生成一个 URL 协议。
@@ -127,5 +74,5 @@ module.exports = {
             this.natural(0, 255) + '.' +
             this.natural(0, 255) + '.' +
             this.natural(0, 255)
-    }
+    },
 }

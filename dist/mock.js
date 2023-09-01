@@ -58,12 +58,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Handler = __webpack_require__(1)
 	var Util = __webpack_require__(3)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(22)
-	var toJSONSchema = __webpack_require__(25)
-	var valid = __webpack_require__(27)
+	var RE = __webpack_require__(25)
+	var toJSONSchema = __webpack_require__(28)
+	var valid = __webpack_require__(30)
 
 	var XHR
-	if (typeof window !== 'undefined') XHR = __webpack_require__(29)
+	if (typeof window !== 'undefined') XHR = __webpack_require__(32)
 
 	/*!
 	    Mock - 模拟请求 & 模拟数据
@@ -163,7 +163,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Util = __webpack_require__(3)
 	var Parser = __webpack_require__(4)
 	var Random = __webpack_require__(5)
-	var RE = __webpack_require__(22)
+	var RE = __webpack_require__(25)
 
 	var Handler = {
 	    extend: Util.extend
@@ -945,6 +945,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	Random.extend(__webpack_require__(20))
 	Random.extend(__webpack_require__(21))
+	Random.extend(__webpack_require__(22))
+	Random.extend(__webpack_require__(23))
+	Random.extend(__webpack_require__(24))
 
 	module.exports = Random
 
@@ -2281,7 +2284,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	/*
 	    ## Web
 	*/
-	const Basic = __webpack_require__(6);
+	var Basic = __webpack_require__(6);
 	module.exports = {
 	    /*
 	        随机生成一个 URL。
@@ -2303,59 +2306,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return (protocol || this.protocol()) + '://' + // protocol?
 	            (host || this.domain()) + // host?
 	            '/' + this.word()
-	    },
-	    uri: function() {
-	        var modules = [
-	            'users','pets','products',
-	        ]
-	        return '/' + this.pick(modules) + '/' + Basic.natural(1, 9)
-	    },
-	    ruri: function() {
-	        var modules = [
-	            'users','pets','products',
-	        ]
-	        return '../' + this.pick(modules) + '/' + Basic.natural(1, 9)
-	    },
-	    uriTempl: function(r) {
-	        var modules = [
-	            'users','pets','products',
-	        ]
-	        return r ? '..' : '' + '/' + this.pick(modules) + '/{id}'
-	    },
-	    host: function() {
-	        var names = [
-	            'localhost','work-pc','ubuntu22',
-	        ]
-	        return this.pick(names)
-	    },
-	    idnHost: function() {
-	        var names = [
-	            'www.','',
-	        ]
-	        return this.pick(names) + this.word() + '.' + (this.tld())
-	    },
-	    idnEmail: function() {
-	        return this.word() + '@' + (this.word() + '.' + this.tld())
-	    },
-	    ipv6: function() {
-	        return 'P@sswo' + Basic.natural(10, 99)
-	    },
-	    password: function(len) {
-	        len = len ? len : 8
-	        var prefix = 'P@sswd'
-	        var prefixLen = prefix.length
-
-	        if (len <= 6) {
-	            return prefix.substring(0, len)
-	        }
-
-	        var start = Math.pow(10, len - prefixLen - 1)
-	        var end = Math.pow(10, len - prefixLen) - 1
-
-	        return prefix + Basic.natural(start, end)
-	    },
-	    byte: function() {
-	        return this.character('lower')
 	    },
 
 	    // 随机生成一个 URL 协议。
@@ -2407,7 +2357,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            this.natural(0, 255) + '.' +
 	            this.natural(0, 255) + '.' +
 	            this.natural(0, 255)
-	    }
+	    },
 	}
 
 
@@ -6651,29 +6601,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
-	    ## Phone
+	    ## Account Custom
 	*/
+
 	var Basic = __webpack_require__(6);
 	module.exports = {
-	    /*
-	        随机生成一个手机号码。
-	    */
-	    mobiphone: function() {
-	        var prefixes = [
-	            '139','138','137','136','135','134','159','158','157','150','151','152',
-	            '133','153','180','181','189','177','173','149',
-	            '130','131','132','155','156','145','185','186','176','175'
-	        ]
-	        return this.pick(prefixes) + Basic.natural(60000000, 99999999)
+	    idnEmail: function() {
+	        return this.word() + '@' + (this.word() + '.' + this.tld())
 	    },
-	    // 随机生成一个固话号码。
-	    telephone: function() {
-	        return '' + Basic.natural(60000000, 99999999)
-	    },
-	    // 随机生成一个电话区号。
-	    areacode: function() {
-	        var codes = ['010', '021', '022', '023', '0310', '0311', '0312', '0313', '0314', '0315', '0316', '0317', '0318', '0319', '0335', '0570', '0571', '0572', '0573', '0574', '0575', '0576', '0577', '0578', '0579', '0580', '024', '024', '0411', '0412', '024', '0414', '0415', '0416', '0417', '0418', '0419', '0421', '0427', '0429', '027', '0710', '0711', '0712', '0713', '0714', '0715', '0716', '0717', '0718', '0719', '0719', '0722', '0724', '0728', '0728', '0728', '025', '0510', '0511', '0512', '0513', '0514', '0515', '0516', '0517', '0518', '0519', '0523', '0527', '0470', '0471', '0472', '0473', '0474', '0475', '0476', '0477', '0478', '0479', '0482', '0483', '0790', '0791', '0792', '0793', '0794', '0795', '0796', '0797', '0798', '0799', '07011', '0349', '0350', '0351', '0352', '0353', '0354', '0355', '0356', '0357', '0358', '0359', '0930', '0931', '0932', '0933', '0934', '0935', '0935', '0936', '0937', '0937', '0938', '0939', '0941', '0943', '0530', '0531', '0532', '0533', '0534', '0535', '0536', '0537', '0538', '0539', '0543', '0546', '0631', '0632', '0633', '0634', '0635', '0451', '0452', '0453', '0454', '0455', '0456', '0457', '0458', '0459', '0464', '0467', '0468', '0469', '0591', '0592', '0593', '0594', '0595', '0596', '0597', '0598', '05999', '020', '0660', '0662', '0663', '0668', '0750', '0751', '0752', '0753', '0754', '0755', '0756', '0757', '0758', '0759', '0760', '0762', '0763', '0766', '0768', '028', '0812', '0813', '0816', '0817', '0818', '0825', '0826', '0827', '0830', '0831', '0832', '028', '0833', '028', '0834', '0835', '0836', '0837', '0838', '0730', '0731', '0731', '0731', '0734', '0735', '0736', '0737', '0738', '0739', '0743', '0744', '0745', '0746', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377', '0371', '0379', '0391', '0391', '0392', '0393', '0394', '0395', '0396', '0398', '0691', '0692', '0870', '0871', '0872', '0873', '0874', '0875', '0876', '0877', '0878', '0879', '0883', '0886', '0887', '0888', '0550', '0551', '0552', '0553', '0554', '0555', '0556', '0557', '0558', '0558', '0559', '0561', '0562', '0563', '0564', '0566', '0951', '0952', '0953', '0954', '0955', '0431', '0432', '0433', '0434', '0435', '0436', '0437', '0438', '0439', '0770', '0771', '0771', '0772', '0772', '0773', '0774', '0774', '0775', '0775', '0776', '0777', '0778', '0779', '0851', '0852', '0853', '0854', '0855', '0856', '0857', '0858', '0859', '029', '029', '0911', '0912', '0913', '0914', '0915', '0916', '0917', '0919', '0970', '0971', '0972', '0973', '0974', '0975', '0976', '0979', '0977', '0898', '0898', '0898', '0898', '0891', '0892', '0893', '0894', '0895', '0896', '0897', '0901', '0992', '0902', '0903', '0906', '0908', '0909', '0990', '0992', '0991', '0993', '0994', '0994', '0995', '0996', '0997', '0997', '0998', '0998', '0999', '852', '853', '886']
-	        return this.pick(codes)
+	    password: function(len) {
+	        len = len ? len : 8
+	        var prefix = 'P@sswd'
+	        var prefixLen = prefix.length
+
+	        if (len <= 6) {
+	            return prefix.substring(0, len)
+	        }
+
+	        var start = Math.pow(10, len - prefixLen - 1)
+	        var end = Math.pow(10, len - prefixLen) - 1
+
+	        return prefix + Basic.natural(start, end)
 	    },
 	}
 
@@ -6730,17 +6678,105 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ }),
 /* 22 */
+/***/ (function(module, exports) {
+
+	/*
+	    ## Misc Custom
+	*/
+
+	module.exports = {
+	    byte: function() {
+	        return this.character('lower')
+	    },
+	}
+
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Parser = __webpack_require__(23)
-	var Handler = __webpack_require__(24)
+	/*
+	    ## Web Custom
+	*/
+
+	var modules = [
+	    'users','pets','products',
+	]
+	var hosts = [
+	    'localhost','work-pc','ubuntu22',
+	]
+
+	var Basic = __webpack_require__(6);
+	module.exports = {
+	    ipv6: function() {
+	        return 'P@sswo' + Basic.natural(10, 99)
+	    },
+	    uri: function() {
+	        return '/' + this.pick(modules) + '/' + Basic.natural(1, 9)
+	    },
+	    ruri: function() {
+	        return '../' + this.pick(modules) + '/' + Basic.natural(1, 9)
+	    },
+	    uriTempl: function(r) {
+	        return r ? '..' : '' + '/' + this.pick(modules) + '/{id}'
+	    },
+	    host: function() {
+	        return this.pick(hosts)
+	    },
+	    idnHost: function() {
+	        var names = [
+	            'www.','',
+	        ]
+	        return this.pick(names) + this.word() + '.' + (this.tld())
+	    },
+	}
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/*
+	    ## Phone Custom
+	*/
+	var Basic = __webpack_require__(6);
+	module.exports = {
+	    /*
+	        随机生成一个手机号码。
+	    */
+	    mobiphone: function() {
+	        var prefixes = [
+	            '139','138','137','136','135','134','159','158','157','150','151','152',
+	            '133','153','180','181','189','177','173','149',
+	            '130','131','132','155','156','145','185','186','176','175'
+	        ]
+	        return this.pick(prefixes) + Basic.natural(60000000, 99999999)
+	    },
+	    // 随机生成一个固话号码。
+	    telephone: function() {
+	        return '' + Basic.natural(60000000, 99999999)
+	    },
+	    // 随机生成一个电话区号。
+	    areacode: function() {
+	        var codes = ['010', '021', '022', '023', '0310', '0311', '0312', '0313', '0314', '0315', '0316', '0317', '0318', '0319', '0335', '0570', '0571', '0572', '0573', '0574', '0575', '0576', '0577', '0578', '0579', '0580', '024', '024', '0411', '0412', '024', '0414', '0415', '0416', '0417', '0418', '0419', '0421', '0427', '0429', '027', '0710', '0711', '0712', '0713', '0714', '0715', '0716', '0717', '0718', '0719', '0719', '0722', '0724', '0728', '0728', '0728', '025', '0510', '0511', '0512', '0513', '0514', '0515', '0516', '0517', '0518', '0519', '0523', '0527', '0470', '0471', '0472', '0473', '0474', '0475', '0476', '0477', '0478', '0479', '0482', '0483', '0790', '0791', '0792', '0793', '0794', '0795', '0796', '0797', '0798', '0799', '07011', '0349', '0350', '0351', '0352', '0353', '0354', '0355', '0356', '0357', '0358', '0359', '0930', '0931', '0932', '0933', '0934', '0935', '0935', '0936', '0937', '0937', '0938', '0939', '0941', '0943', '0530', '0531', '0532', '0533', '0534', '0535', '0536', '0537', '0538', '0539', '0543', '0546', '0631', '0632', '0633', '0634', '0635', '0451', '0452', '0453', '0454', '0455', '0456', '0457', '0458', '0459', '0464', '0467', '0468', '0469', '0591', '0592', '0593', '0594', '0595', '0596', '0597', '0598', '05999', '020', '0660', '0662', '0663', '0668', '0750', '0751', '0752', '0753', '0754', '0755', '0756', '0757', '0758', '0759', '0760', '0762', '0763', '0766', '0768', '028', '0812', '0813', '0816', '0817', '0818', '0825', '0826', '0827', '0830', '0831', '0832', '028', '0833', '028', '0834', '0835', '0836', '0837', '0838', '0730', '0731', '0731', '0731', '0734', '0735', '0736', '0737', '0738', '0739', '0743', '0744', '0745', '0746', '0370', '0371', '0372', '0373', '0374', '0375', '0376', '0377', '0371', '0379', '0391', '0391', '0392', '0393', '0394', '0395', '0396', '0398', '0691', '0692', '0870', '0871', '0872', '0873', '0874', '0875', '0876', '0877', '0878', '0879', '0883', '0886', '0887', '0888', '0550', '0551', '0552', '0553', '0554', '0555', '0556', '0557', '0558', '0558', '0559', '0561', '0562', '0563', '0564', '0566', '0951', '0952', '0953', '0954', '0955', '0431', '0432', '0433', '0434', '0435', '0436', '0437', '0438', '0439', '0770', '0771', '0771', '0772', '0772', '0773', '0774', '0774', '0775', '0775', '0776', '0777', '0778', '0779', '0851', '0852', '0853', '0854', '0855', '0856', '0857', '0858', '0859', '029', '029', '0911', '0912', '0913', '0914', '0915', '0916', '0917', '0919', '0970', '0971', '0972', '0973', '0974', '0975', '0976', '0979', '0977', '0898', '0898', '0898', '0898', '0891', '0892', '0893', '0894', '0895', '0896', '0897', '0901', '0992', '0902', '0903', '0906', '0908', '0909', '0990', '0992', '0991', '0993', '0994', '0994', '0995', '0996', '0997', '0997', '0998', '0998', '0999', '852', '853', '886']
+	        return this.pick(codes)
+	    },
+	}
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var Parser = __webpack_require__(26)
+	var Handler = __webpack_require__(27)
 	module.exports = {
 		Parser: Parser,
 		Handler: Handler
 	}
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	// https://github.com/nuysoft/regexp
@@ -7315,7 +7351,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = parser
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7712,13 +7748,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = Handler
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(26)
+	module.exports = __webpack_require__(29)
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7771,13 +7807,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(28)
+	module.exports = __webpack_require__(31)
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -7804,7 +7840,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	*/
 	var Constant = __webpack_require__(2)
 	var Util = __webpack_require__(3)
-	var toJSONSchema = __webpack_require__(25)
+	var toJSONSchema = __webpack_require__(28)
 
 	function valid(template, data) {
 	    var schema = toJSONSchema(template)
@@ -8227,13 +8263,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = valid
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(30)
+	module.exports = __webpack_require__(33)
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* global window, document, location, Event, setTimeout */

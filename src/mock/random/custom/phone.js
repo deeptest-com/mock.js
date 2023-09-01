@@ -1,7 +1,7 @@
 /*
-    ## Phone
+    ## Phone Custom
 */
-var Basic = require("./basic");
+var Basic = require("../basic");
 module.exports = {
     /*
         随机生成一个手机号码。
