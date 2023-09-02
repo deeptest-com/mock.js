@@ -25,7 +25,6 @@ function generatePart () {
         symbols[Math.floor(Math.random() * symbols.length)]
     );
 }
-
 function generateIpv6 () {
     var size = 8;
     var address = []
